@@ -3,10 +3,7 @@ import React, { Component } from 'react';
 class Life extends Component {
   constructor(props) {
     super(props);
-    console.log(
-      'constructor: good place to create state',
-      'componentDidUpdate(prevProps, prevState): some updates based on new props'
-    );
+    console.log('constructor: good place to create state');
   }
 
   componentDidMount() {
