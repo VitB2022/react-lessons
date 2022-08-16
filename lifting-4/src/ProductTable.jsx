@@ -1,33 +1,41 @@
 import React from 'react';
+import ProductCategoryRow from './ProductCategoryRow.jsx';
+import ProductRow from './ProductRow.jsx';
 
-class SearchBar extends React.Component {
-  handleFilterTextChange = e => {
-    this.props.onFilterTextChange(e.target.value);
-  };
+const ProductTable = ({ filterText, inStockOnly, products }) => {
+  const rows = [];
+  let lastCategory = null;
 
-  handleInStockChange = e => {
-    this.props.onInStockChange(e.target.checked);
-  };
-
-  render() {
-    return (
-      <form>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={this.props.filterText}
-          onChange={this.handleFilterTextChange}
+  products.forEach(product => {
+    if (product.name.indexOf(filterText) === -1) {
+      return;
+    }
+    if (inStockOnly && !product.stocked) {
+      return;
+    }
+    if (product.category !== lastCategory) {
+      rows.push(
+        <ProductCategoryRow
+          category={product.category}
+          key={product.category}
         />
-        <p>
-          <input
-            type="checkbox"
-            checked={this.props.inStockOnly}
-            onChange={this.handleInStockChange}
-          />
-          Only show products in stock
-        </p>
-      </form>
-    );
-  }
-}
-export default SearchBar;
+      );
+    }
+    rows.push(<ProductRow product={product} key={product.name} />);
+    lastCategory = product.category;
+  });
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>{rows}</tbody>
+    </table>
+  );
+};
+
+export default ProductTable;
