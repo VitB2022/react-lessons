@@ -1,4 +1,4 @@
 import React from 'react';
 
-const Online = () => <div className="status">Online</div>;
+const Online = () => <div className="status">online</div>;
 export default Online;
